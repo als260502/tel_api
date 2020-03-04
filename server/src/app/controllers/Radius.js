@@ -1,0 +1,39 @@
+const Radius = require('../models/Radius');
+
+module.exports = {
+  async index(req, res, next) {
+    const { user } = req.body;
+
+    if (!user) {
+      return res.status(401).json({ message: 'Usuario nao informado' });
+    }
+    try {
+      const usuario = await Radius.findOne(
+        {
+          attributes:
+            [
+              'username',
+              'acctstoptime',
+              'calledstationid',
+              'callingstationid',
+              'framedipaddress',
+              'nasportid',
+            ],
+          where: { username: `${user}@predialnet.com.br` },
+          order: [
+            ['radacctid', 'DESC'],
+          ],
+        },
+      );
+
+      if (!usuario) {
+        return res.status(401).json({ message: 'Nenhum usuario encontrado' });
+      }
+
+      res.json(usuario);
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  },
+};
