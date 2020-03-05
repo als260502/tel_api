@@ -1,0 +1,77 @@
+.container{
+  width: 400px;
+  background: #fff;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  padding: 30px 20px;   
+  margin: 10% auto;
+
+}
+.container header{
+  font-size: 25px;
+  text-align: center;
+  display: block;
+  color: #333;
+  font-weight: bold;
+}
+.container form{
+  margin-top: 30px;
+}
+.container form .input-block + .input-block {
+  margin-top: 20px;
+}
+
+.container form .input-block label{
+  color: #acacac;
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+}
+
+.container form .input-block input{
+  width: 100%;
+  height: 32px;
+  color: #666;
+  font-size: 14px;  
+  border: 0;
+  border-bottom:2px solid #eee;  
+}
+
+.container form .input-block input::placeholder{
+  color: rgba(102, 102, 102, 0.479);
+  font-size: 12px; 
+  font-style: italic; 
+  font-weight: bold;
+   
+}
+.container form button[type=submit]{
+  width: 100%;
+  border: 0;
+  margin-top: 30px;
+  background: #7d40e7;
+  border-bottom: 2px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.5s; 
+}
+
+.container form button[type=submit]:hover{
+ background: #6931ca;
+}
+
+.errMessage{
+  width: 100%;
+  border: 0;
+  margin-top: 30px;
+  background: #40e7c3;
+  border-bottom: 2px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;  
+  text-align: center; 
+   
+}

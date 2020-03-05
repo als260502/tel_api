@@ -7,7 +7,7 @@ module.exports = {
     try {
       const user = await User.findOne({ where: { username } });
       if (user === null) {
-        res.status(401).json({ message: 'Usuario invalido' });
+        return res.status(401).json({ message: 'Usuario invalido' });
       }
 
       if (!(await user.checkPassword(password))) {

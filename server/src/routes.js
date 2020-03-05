@@ -9,9 +9,9 @@ const authMiddleware = require('./app/middlewares/auth');
 
 const routes = Router();
 
-routes.post('/telefonia/app/users', User.store);
-routes.post('/telefonia/app/users/update', authMiddleware, User.update);
 routes.post('/telefonia/app/users/auth', Auth.index);
+routes.post('/telefonia/app/users', authMiddleware, User.store);
+routes.post('/telefonia/app/users/update', authMiddleware, User.update);
 
 routes.get('/telefonia/app/dashboard', authMiddleware, Dashboard.index);
 routes.get('/telefonia/app/dashboard/fone', authMiddleware, SerPredialfone.index);
