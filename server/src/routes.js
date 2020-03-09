@@ -14,8 +14,9 @@ routes.post('/telefonia/app/users', authMiddleware, User.store);
 routes.post('/telefonia/app/users/update', authMiddleware, User.update);
 
 routes.get('/telefonia/app/dashboard', authMiddleware, Dashboard.index);
-routes.get('/telefonia/app/dashboard/fone', authMiddleware, SerPredialfone.index);
-routes.get('/telefonia/app/dashboard/radius', authMiddleware, Radius.index);
+routes.post('/telefonia/app/dashboard/fone', authMiddleware, SerPredialfone.index);
+routes.post('/telefonia/app/dashboard/radius', authMiddleware, Radius.index);
+routes.post('/telefonia/app/dashboard/find', authMiddleware, Radius.find);
 
 
 module.exports = routes;

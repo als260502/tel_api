@@ -36,4 +36,40 @@ module.exports = {
       return next(error);
     }
   },
+  async find(req, res, next) {
+    console.log(req.body)
+    const { mac } = req.body;
+
+    if (!mac) {
+      return res.status(401).json({ message: 'Usuario nao informado' });
+    }
+    try {
+      const usuario = await Radius.findOne(
+        {
+          attributes:
+            [
+              'username',
+              'acctstoptime',
+              'calledstationid',
+              'callingstationid',
+              'framedipaddress',
+              'nasportid',
+            ],
+          where: { callingstationid: `${mac}` },
+          order: [
+            ['radacctid', 'DESC'],
+          ],
+        },
+      );
+
+      if (!usuario) {
+        return res.status(401).json({ message: 'Nenhum usuario encontrado' });
+      }
+
+      return res.json(usuario);
+
+    } catch (error) {
+      return next(error);
+    }
+  },
 };

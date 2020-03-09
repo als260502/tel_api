@@ -14,16 +14,16 @@ export default function Login({ history }) {
     try {
 
       const response = await api.post('/users/auth', { username, password })
-      //console.log(response.data)
-      const { id, token } = response.data
+
+      const { user, token } = response.data
+      //console.log(user, token)
+      history.push('/dashboard', { id: user.id, token })
 
     } catch (error) {
       const { message } = error.response.data
       setMessage(message)
     }
 
-
-    //history.push('/dashboard', { id, token })
   }
   return (
     <div className='container'>

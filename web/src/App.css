@@ -30,7 +30,7 @@
     grid-template-columns: 1fr 1fr;           
   }
   #app main ul li.data-item {
-    width: 100%;          
+    width: 300px;          
   }
 
   #app aside{    

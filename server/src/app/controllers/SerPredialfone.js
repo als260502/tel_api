@@ -2,10 +2,11 @@ const Fone = require('../models/SerPredialfone');
 
 module.exports = {
   async index(req, res, next) {
+    console.log(req.body)
     const { predialfone } = req.body;
 
     if (!predialfone) {
-      return res.status(401).json({ message: 'Numero nao informado' });
+      return res.json({ message: 'Numero nao informado' });
     }
     try {
       const fone = await Fone.findOne(
@@ -22,8 +23,10 @@ module.exports = {
           where: { sip_username: predialfone },
         },
       );
-      res.json(fone);
-      return next();
+      if (!fone) {
+        return res.status(400).json({ message: "telefone nao encontrado" })
+      }
+      return res.json(fone);
     } catch (error) {
       return next(error);
     }
