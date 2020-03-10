@@ -1,4 +1,4 @@
-require('dotenv').config();
+const dbConfig = require('../credentials/databaseCredentials')
 
 module.exports = {
   development: {
@@ -9,32 +9,31 @@ module.exports = {
     dialect: process.env.DB_DIALECT,
   },
   local: {
-    username: process.env.LOCAL_USER,
-    password: process.env.LOCAL_PASS,
-    database: process.env.LOCAL_DB,
-    host: process.env.LOCAL_HOST,
+    username: dbConfig.local.user,
+    password: dbConfig.local.pass,
+    database: dbConfig.local.database,
+    host: dbConfig.local.host,
     dialect: 'mysql',
     logging: false,
     define: {
       timestamp: true,
       underscored: true,
       underscoredAll: true,
-      timezone: '-03:00',
     },
   },
   predial: {
-    username: process.env.PREDIAL_USER,
-    password: process.env.PREDIAL_PASS,
-    database: process.env.PREDIAL_DB,
-    host: process.env.PREDIAL_HOST,
+    username: dbConfig.predial.user,
+    password: dbConfig.predial.pass,
+    database: dbConfig.predial.database,
+    host: dbConfig.predial.host,
     dialect: 'mysql',
     logging: false,
   },
   pppoe: {
-    username: process.env.PPPOE_USER,
-    password: process.env.PPPOE_PASS,
-    database: process.env.PPPOE_DB,
-    host: process.env.PPPOE_HOST,
+    username: dbConfig.ppp.user,
+    password: dbConfig.ppp.pass,
+    database: dbConfig.ppp.database,
+    host: dbConfig.ppp.host,
     dialect: 'mysql',
     logging: false,
   },

@@ -3,6 +3,8 @@ import api from '../../services/api'
 
 import './Dashboard.css'
 
+import ErrorMessage from '../../components/ErrorMessage'
+
 
 const Dashboard = ({ history }) => {
   const [token, setToken] = useState('')
@@ -10,6 +12,7 @@ const Dashboard = ({ history }) => {
   const [user, setUser] = useState('')
   const [message, setMessage] = useState('')
 
+  const [sipCodigo, setSipCodigo] = useState('')
   const [sipUsername, setSipUsername] = useState('')
   const [sipPassword, setSipPassword] = useState('')
   const [sipAddress, setSipAddess] = useState('')
@@ -22,10 +25,18 @@ const Dashboard = ({ history }) => {
   const [router, setRouter] = useState('')
   const [routerIp, setRouterIp] = useState('')
 
-  async function handleFoneSearch(event) {
-
+  function resetFields() {
+    setUser(null)
     setRouter(null)
     setPppAddress(null)
+    setRouter(null)
+    setRouterIp(null)
+    setMessage(null)
+  }
+
+  async function handleFoneSearch(event) {
+
+    resetFields()
 
     event.preventDefault();
 
@@ -35,14 +46,21 @@ const Dashboard = ({ history }) => {
         predialfone
       }
       )
-      const { numero, codcliente, num_ip, num_mac, sip_username, sip_password } = response.data
+      const { numero, codcliente, num_ip, num_mac, sip_username, sip_password, portab_entrante } = response.data
 
-      setSipUsername(sip_username)
+      if (!codcliente) {
+        setMessage('Telefone nao encontrado')
+        return
+      }
+      const tel = !sip_username ? portab_entrante : sip_username
+
+      setSipCodigo(codcliente)
+      setSipUsername(tel)
       setSipPassword(sip_password)
       setSipAddess(num_ip)
 
 
-      if (!num_mac.match(/00:0B/)) {
+      if (!num_mac.match(/00:0/)) {
         const responseUser = await api.post(`/dashboard/find`, {
           authorization: `Bearer ${token}`,
           mac: num_mac
@@ -54,20 +72,38 @@ const Dashboard = ({ history }) => {
           setPppVlan(responseUser.data.calledstationid)
           setPppVlanNas(responseUser.data.nasportid)
           setPppAddress(responseUser.data.framedipaddress)
-          if (responseUser.data.acctstoptime)
-            setRouterIp(1)
-        }
 
+        }
       }
 
     } catch (error) {
-      setMessage(error)
+      setRouterIp(1)
+      setMessage("Usuario não encontrado")
     }
   }
 
   async function handleUserSearch(event) {
+    setMessage(null)
     event.preventDefault();
 
+    try {
+      const response = await api.post(`/dashboard/radius`, {
+        authorization: `Bearer ${token}`,
+        user
+      }
+      )
+      const { username, calledstationid, nasportid, framedipaddress } = response.data
+
+      if (username) setRouter(1)
+      setPppUsername(username)
+      setPppVlan(calledstationid)
+      setPppVlanNas(nasportid)
+      setPppAddress(framedipaddress)
+
+
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
@@ -79,7 +115,7 @@ const Dashboard = ({ history }) => {
       setToken(myToken)
 
     } catch (error) {
-      return history.push('/')
+      return history.push('/telefonia/app')
     }
 
   })
@@ -108,7 +144,7 @@ const Dashboard = ({ history }) => {
           <form name='ppp' onSubmit={handleUserSearch}>
 
             <div className="input-block">
-              <label htmlFor="user">Usuarop PPPoE</label>
+              <label htmlFor="user">Usuario PPPoE</label>
               <input
                 name="user"
                 id="user"
@@ -120,6 +156,7 @@ const Dashboard = ({ history }) => {
             <button type="submit">Buscar</button>
           </form>
         }
+        <ErrorMessage msg={message} />
       </aside>
 
       <main>
@@ -128,7 +165,19 @@ const Dashboard = ({ history }) => {
           <li className='data-item'>
 
             <div className="input-block">
-              <label htmlFor="sip_username">Predialfone</label>
+              <label htmlFor="codcliente">Codigo</label>
+              <input
+                name="codcliente"
+                id="codcliente"
+                value={sipCodigo}
+                onChange={event => setSipCodigo(event.target.value)}
+                readOnly
+
+              />
+            </div>
+
+            <div className="input-block">
+              <label htmlFor="sip_username">Telefone</label>
               <input
                 name="sip_username"
                 id="sip_username"

@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const secret = require('../../credentials/databaseCredentials').app_secret
 
 class User extends Model {
   static init(sequelize) {
@@ -23,7 +24,7 @@ class User extends Model {
   }
 
   generateToken() {
-    return jwt.sign({ id: this.id, role: this.role }, process.env.APP_SECRET);
+    return jwt.sign({ id: this.id, role: this.role }, secret);
   }
 }
 

@@ -75,3 +75,13 @@
   text-align: center; 
    
 }
+
+.loading{
+  margin-top: 10px;
+  margin-left: 47%;
+}
+.loading img{
+ 
+ width: 35px;
+ 
+}

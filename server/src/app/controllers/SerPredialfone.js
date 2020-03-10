@@ -1,4 +1,5 @@
 const Fone = require('../models/SerPredialfone');
+const { Op } = require('sequelize')
 
 module.exports = {
   async index(req, res, next) {
@@ -19,8 +20,9 @@ module.exports = {
               'num_mac',
               'sip_username',
               'sip_password',
+              'portab_entrante',
             ],
-          where: { sip_username: predialfone },
+          where: { [Op.or]: [{ sip_username: predialfone }, { portab_entrante: predialfone }] },
         },
       );
       if (!fone) {
