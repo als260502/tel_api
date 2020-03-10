@@ -49,12 +49,13 @@ const Dashboard = ({ history }) => {
         }
         )
         if (responseUser) {
-
           setRouter(1)
           setPppUsername(responseUser.data.username)
           setPppVlan(responseUser.data.calledstationid)
           setPppVlanNas(responseUser.data.nasportid)
           setPppAddress(responseUser.data.framedipaddress)
+          if (responseUser.data.acctstoptime)
+            setRouterIp(1)
         }
 
       }
@@ -67,10 +68,20 @@ const Dashboard = ({ history }) => {
   async function handleUserSearch(event) {
     event.preventDefault();
 
+
   }
 
   useEffect(() => {
-    setToken(history.location.state.token)
+
+    try {
+
+      const myToken = history.location.state.token
+      setToken(myToken)
+
+    } catch (error) {
+      return history.push('/')
+    }
+
   })
 
   return (
